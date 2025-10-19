@@ -1,5 +1,8 @@
 "use client";
 
+import Dashboard from "./components/Dashboard/page"
+
+
 export default function Home() {
   return (
     <div className="font-sans min-h-screen p-8 pb-20 gap-16 sm:p-20">
@@ -38,7 +41,7 @@ export default function Home() {
         </div>
 
         <div>
-          <button onclick ="alert('Login Successful')"
+          <button onclick ={<Dashboard/>}
             type="submit"
             className="bg-blue-400 mt-5 items-center align-self:center w-full border px-2 py-1 h-10 hover:cursor-pointer hover:bg-blue-500 border-black rounded-xl ">Login</button>
         </div>
