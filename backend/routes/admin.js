@@ -6,8 +6,8 @@ const bcrypt=require("bcrypt");
 
 const {adminModel, TransactionModel, userModel } =require("../db");
 
-const {JWT_ADMIN_PASSWORD}= require("../../config");
-const { adminmiddleware } = require("./middleware/adminmidleware");
+const {JWT_ADMIN_PASSWORD}= require("../config");
+const { adminmiddleware } = require("../middleware/adminmiddleware");
 
 // Zod validation schema for user signup
 const signupSchema = z.object({
@@ -141,7 +141,7 @@ const signupSchema = z.object({
     })
 
 
-        adminRouter.post('/createtransaction',adminmiddleware, usermiddleware, async function(req,res){
+        adminRouter.post('/createtransaction',adminmiddleware, async function(req,res){
 
         const adminId=req.userId;
 

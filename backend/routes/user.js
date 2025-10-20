@@ -3,9 +3,9 @@ const {userModel, userTransactionModel}= require("../db");
 const jwt = require("jsonwebtoken");
 const {z}= require("zod");
 const bcrypt=require("bcrypt");
-const {userMiddleware}=require("../middleware/usermidleware")
+const { usermiddleware } = require("../middleware/usermiddleware")
 
-const {JWT_USER_PASSWORD}= require("../../config")
+const {JWT_USER_PASSWORD}= require("../config")
 const userRouter=Router();
 
 // Zod validation schema for user signup 
@@ -110,7 +110,7 @@ const signupSchema = z.object({
         }
     })
 
-    userRouter.get('/usertransaction',userMiddleware, async function(req,res){
+    userRouter.get('/usertransaction',usermiddleware, async function(req,res){
         const userId=req.userId;
 
         const purchases= await userTransactionModel.find({

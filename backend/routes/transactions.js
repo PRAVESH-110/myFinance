@@ -1,5 +1,5 @@
 const Router= require("express");
-const {adminmiddleware}=require("../middleware/usermidleware")
+const { adminmiddleware } = require("../middleware/adminmiddleware")
 const { TransactionModel } = require("../db");
 const transactionRouter=Router();
     
@@ -13,4 +13,9 @@ transactionRouter.post('/transaction', adminmiddleware, async function (req,res,
         userId:userId,
         transactionId:transactionId
     })
+    res.json({ message: 'Transaction created successfully' });
 })
+
+module.exports = {
+    transactionRouter
+}
