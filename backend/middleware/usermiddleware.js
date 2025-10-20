@@ -1,5 +1,5 @@
 const {JWT_USER_PASSWORD}= process.env;
-const jwt= require("jsonwebtoken");
+const jwt=  require("jsonwebtoken");
 
 const usermiddleware = (req, res, next) => {
     const token = req.body.token;

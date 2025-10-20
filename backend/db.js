@@ -13,6 +13,8 @@ const userSchema=new Schema({
 const adminSchema=new Schema({
     email:{type:String, required: true, unique:true},
     password:{type:String, required:true},
+    firstName:{type:String, required:true},
+    lastName:{type:String, required:true},
 
 })
 
@@ -24,13 +26,19 @@ const transactionSchema=new Schema({
     date:{type:Date, default:Date.now},
     description:{type:String}
 })
+const usertxnSchema = new Schema({
+    userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  courseId: { type: Schema.Types.ObjectId, required: true },
+});
 
-const user=mongoose.model('User', userSchema);
-const admin= mongoose.model('Admin', adminSchema);
-const userTransaction= mongoose.model('transaction', transactionSchema);
+const userModel=mongoose.model('User', userSchema);
+const adminModel= mongoose.model('Admin', adminSchema);
+const TransactionModel= mongoose.model('transaction', transactionSchema);
+const userTransactionModel=  mongoose.model('usertransaction', usertxnSchema);
 
-module.export={
-    user,
-    admin,
-    userTransaction
+module.exports={
+    userModel,
+    adminModel,
+    TransactionModel,
+    userTransactionModel
 }

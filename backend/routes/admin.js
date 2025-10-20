@@ -4,9 +4,11 @@ const jwt = require("jsonwebtoken");
 const {z}= require("zod");
 const bcrypt=require("bcrypt");
 
-const {adminModel} =require("../db");
+const {adminModel, TransactionModel, userModel } =require("../db");
+
 const {JWT_ADMIN_PASSWORD}= require("../../config");
 const { adminmiddleware } = require("./middleware/adminmidleware");
+
 // Zod validation schema for user signup
 const signupSchema = z.object({
     email: z.string().email(),
@@ -79,6 +81,9 @@ const signupSchema = z.object({
         password: z.string().min(1, "Password is required")
     });
 
+
+
+    //SIGIN
     adminRouter.post('/signin',async function(req,res){
         const {email,password}=req.body;
 
@@ -135,6 +140,61 @@ const signupSchema = z.object({
         }
     })
 
+
+        adminRouter.post('/createtransaction',adminmiddleware, usermiddleware, async function(req,res){
+
+        const adminId=req.userId;
+
+        const {imageURL, title, description, price}=req.body;
+
+        const course=await TransactionModel.create({
+            imageURL: imageURL,
+            title: title,
+            description: description,
+            price:price,
+            creatorID: adminId
+
+        })
+        res.json({
+            message:"course created",
+            courseId: course._id
+        })
+    })
+
+    adminRouter.put('/edittransaction',adminmiddleware, async function(req,res){
+        const adminId=req.userId;
+
+        const {imageURL, title, description, price, courseId}=req.body;
+
+
+        const course=await TransactionModel.updateOne({
+            _id: courseId, //check from the function updateone (ctrl+click)- filter the course
+            creatorID:adminId
+        },{
+            imageURL: imageURL, 
+            title: title,
+            description: description,
+            price:price,
+
+        })
+        res.json({
+            message:"course updted",
+            courseId: course._id
+        })
+    })
+    
+    adminRouter.get('/transaction/bulk',adminmiddleware, async function(req,res){
+        const adminId=req.userId;
+
+        const courses=await TransactionModel.find({
+            // _id: courseId, //check from the function updateone (ctrl+click)- filter the course
+            creatorID:adminId
+        });
+        res.json({
+            message:"courses found",
+            courses
+        })
+    })
 
 
 module.exports={

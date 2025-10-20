@@ -2,15 +2,15 @@ require('dotenv').config();
 const express=require('express');
 const cors=require('cors');
 const mongoose=require('mongoose');
-const bodyParser=require('body-parser');
+// const bodyParser=require('body-parser');
 
-const adminRoutes=require('./routes/adminRoutes');
-const userRoutes=require('./routes/userRoutes');
-const transactionRoutes=require('./routes/transactionRoutes');
+const adminRoutes=require('./routes/admin');
+const userRoutes=require('./routes/user');
+const transactionRoutes=require('./routes/transactions');
 
 const app=express();
 
-const allowedOrigin=[];
+const allowedOrigin=[ 'http://localhost:5173',  ];
 
 app.user(cors({
     origin:(origin, callback)=>{
