@@ -1,3 +1,5 @@
+//admin can only view other transactions from transactionmodel, but only user can edit his txns from userTransactionModel
+
 const mongoose =require('mongoose');
 
 const Schema= mongoose.Schema;
@@ -28,7 +30,7 @@ const transactionSchema=new Schema({
 })
 const usertxnSchema = new Schema({
     userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-  courseId: { type: Schema.Types.ObjectId, required: true },
+    purchaseId: { type: Schema.Types.ObjectId, required: true },
 });
 
 const userModel=mongoose.model('User', userSchema);

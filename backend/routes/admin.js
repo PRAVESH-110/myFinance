@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const {z}= require("zod");
 const bcrypt=require("bcrypt");
 
-const {adminModel, TransactionModel, userModel } =require("../db");
+const {adminModel, TransactionModel } =require("../db");
 
 const {JWT_ADMIN_PASSWORD}= require("../config");
 const { adminmiddleware } = require("../middleware/adminmiddleware");
@@ -143,7 +143,7 @@ const signupSchema = z.object({
 
         adminRouter.post('/createtransaction',adminmiddleware, async function(req,res){
 
-        const adminId=req.userId;
+        const userId=req.userId;
 
         const {imageURL, title, description, price}=req.body;
 
@@ -152,7 +152,7 @@ const signupSchema = z.object({
             title: title,
             description: description,
             price:price,
-            creatorID: adminId
+            creatorID: userId
 
         })
         res.json({
@@ -161,27 +161,7 @@ const signupSchema = z.object({
         })
     })
 
-    adminRouter.put('/edittransaction',adminmiddleware, async function(req,res){
-        const adminId=req.userId;
-
-        const {imageURL, title, description, price, courseId}=req.body;
-
-
-        const course=await TransactionModel.updateOne({
-            _id: courseId, //check from the function updateone (ctrl+click)- filter the course
-            creatorID:adminId
-        },{
-            imageURL: imageURL, 
-            title: title,
-            description: description,
-            price:price,
-
-        })
-        res.json({
-            message:"course updted",
-            courseId: course._id
-        })
-    })
+    
     
     adminRouter.get('/transaction/bulk',adminmiddleware, async function(req,res){
         const adminId=req.userId;

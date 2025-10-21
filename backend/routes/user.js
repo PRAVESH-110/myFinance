@@ -110,6 +110,27 @@ const signupSchema = z.object({
         }
     })
 
+    userRouter.post('/createtransaction',usermiddleware, async function(req,res){
+    
+            const userId=req.userId;
+    
+            const {imageURL, title, description, price}=req.body;
+    
+            const transaction=await userTransactionModel.create({
+                imageURL: imageURL,
+                title: title,
+                description: description,
+                price:price,
+                creatorID: userId
+    
+            })
+            res.json({
+                message:"transaction created",
+                transactionId: transaction._id
+            })
+        })
+
+
     userRouter.get('/usertransaction',usermiddleware, async function(req,res){
         const userId=req.userId;
 
@@ -120,11 +141,34 @@ const signupSchema = z.object({
         let purchasedCourseIds=[];
 
         for(let i=0;i<purchases.length;i++){
-            purchasedCourseIds.push(purchases[i].courseId);
+            purchasedCourseIds.push(purchases[i].purchaseId);
         }
         res.json({
             purchases,
             courseData
+        })
+    })
+
+
+    //edit one's transaction details
+    userRouter.put('/edittransacion',usermiddleware, async function(req,res){
+        const userId=req.userId;
+
+        const {imageURL, title, description, price, purchaseId}=req.body;
+
+        const edited=await userTransactionModel.updateOne({
+            _id: purchaseId, //check from the function updateone (ctrl+click)- filter the course
+            creatorID:userId
+        },{
+            imageURL: imageURL, 
+            title: title,
+            description: description,
+            price:price,
+
+        })
+        res.json({
+            message:"transaction updted",
+            transactionId: transaction._id
         })
     })
 
