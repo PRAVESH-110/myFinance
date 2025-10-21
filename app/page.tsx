@@ -6,6 +6,7 @@ import { useAuth } from './context/AuthContext';
 export default function Home() {
   const [showLogin, setShowLogin] = useState(false);
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const { login } = useAuth();
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -15,8 +16,16 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-90">
+       <header>
+        {/* onclick render the admin comp to decide between admin login and signup */}
+          <button 
+          className='border bg-pink-300 rounded-3xl px-3 py-1 m-7 float-right hover:cursor-pointer hover:bg-pink-400'>
+            A 
+          </button>
+        </header>
       {/* Hero Section */}
       <div className=" py-20 mt-5">
+
         <div className="container mx-auto px-6 text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-6">Welcome to myFinance</h1>
           <p className="text-xl md:text-2xl mb-8">Your Personal Finance Management Solution</p>
@@ -104,6 +113,20 @@ export default function Home() {
                   id="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter your email"
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter your email"
                   required
