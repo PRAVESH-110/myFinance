@@ -2,12 +2,17 @@
 
 import { useState } from 'react';
 import { useAuth } from './context/AuthContext';
+import { useModal } from './context/ModalContext';
+import {AdminIdentity} from "./admin/identity/page"
 
 export default function Home() {
   const [showLogin, setShowLogin] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { login } = useAuth();
+
+  const { openModal } = useModal();
+
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,7 +24,11 @@ export default function Home() {
        <header>
         {/* onclick render the admin comp to decide between admin login and signup */}
           <button 
-          className='border bg-pink-300 rounded-3xl px-3 py-1 m-7 float-right hover:cursor-pointer hover:bg-pink-400'>
+          className='border bg-pink-300 rounded-3xl px-3 py-1 m-7 float-right hover:cursor-pointer hover:bg-pink-400'
+          onClick={()=>
+            openModal(<AdminIdentity/>)
+          }
+          >
             A 
           </button>
         </header>
