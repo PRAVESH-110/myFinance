@@ -16,7 +16,7 @@ export function ModalProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
   const [content, setContent] = useState<ReactNode | null>(null);
 
-  const openModal = (modalContent: ReactNode) => {
+  const openModal = (modalContent: ReactNode) => {  
     setContent(modalContent);
     setIsOpen(true);
     document.body.style.overflow = 'hidden';

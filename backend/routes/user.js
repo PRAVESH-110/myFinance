@@ -11,18 +11,20 @@ const userRouter=Router();
 // Zod validation schema for user signup 
 const signupSchema = z.object({
     email: z.string().email(),
+    username: z.string().min(3, "Username must be at least 3 characters").max(30, "Username too long"),
     password: z.string().min(6, "Password must be at least 6 characters"),
     firstName: z.string().min(1, "First name is required").max(50, "First name too long"),
     lastName: z.string().min(1, "Last name is required").max(50, "Last name too long")
 });
     
     userRouter.post('/signup',async function(req,res){
-        const {email, password, firstName, lastName }=req.body; 
+        const {email, username, password, firstName, lastName } = req.body; 
         
         // Zod validation
         try {
             const validatedData = signupSchema.parse({
                 email,
+                username,
                 password,
                 firstName,
                 lastName
@@ -34,6 +36,7 @@ const signupSchema = z.object({
             // If validation passes, create user
             await userModel.create({
                 email: validatedData.email,
+                username: validatedData.username,
                 password: hashedPassword,
                 firstName: validatedData.firstName,
                 lastName: validatedData.lastName

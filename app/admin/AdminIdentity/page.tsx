@@ -1,10 +1,30 @@
 // app/components/admin/AdminIdentity.tsx
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useModal } from '../../context/ModalContext';
+import { AdminLoginModal } from '../../components/admin/AdminLoginModal';
+import { AdminSignupModal } from '../../components/admin/AdminSignupModal';
 
 export function AdminIdentity() {
-  const router = useRouter();
+  const { openModal, closeModal } = useModal();
+
+  const handleLoginClick = () => {
+    openModal(
+      <AdminLoginModal 
+        onClose={(component) => {
+          if (component) {
+            openModal(component);
+          } else {
+            closeModal();
+          }
+        }}
+      />
+    );
+  };
+
+  const handleSignupClick = () => {
+    openModal(<AdminSignupModal onClose={() => {}} />);
+  };
 
   return (
     <div className="space-y-6">
@@ -15,7 +35,7 @@ export function AdminIdentity() {
 
       <div className="space-y-4">
         <button
-          onClick={() => router.push('/admin/login')}
+          onClick={handleLoginClick}
           className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors"
         >
           Admin Login
@@ -31,10 +51,10 @@ export function AdminIdentity() {
         </div>
 
         <button
-          onClick={() => router.push('/admin/signup')}
+          onClick={handleSignupClick}
           className="w-full border-2 border-blue-600 text-blue-600 py-2 px-4 rounded-lg hover:bg-blue-50 transition-colors"
         >
-            Admin Signup
+          Admin Signup
         </button>
       </div>
     </div>

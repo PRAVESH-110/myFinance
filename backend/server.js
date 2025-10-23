@@ -10,7 +10,7 @@ const transactionRouter = require('./routes/transactions').transactionRouter;
 
 const app=express();
 
-const allowedOrigin=[ 'http://localhost:5173',  ];
+const allowedOrigin=[ 'http://localhost:5173', 'http://localhost:3000', 'http://localhost:3001'];
 
 app.use(cors({
     origin:(origin, callback)=>{
