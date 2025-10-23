@@ -1,9 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import AllTransactions from '../../transactions/AllTransactions';
+import { useRouter } from 'next/navigation';
 
-export function AdminLoginModal({ onClose }: { onClose: (component: React.ReactNode) => void }) {
+export function AdminLoginModal({ onClose }: { onClose: () => void }) {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -31,11 +32,19 @@ export function AdminLoginModal({ onClose }: { onClose: (component: React.ReactN
         throw new Error(data.message || 'Failed to login');
       }
 
-      // Close modal on successful login
-      else{
+      // Handle successful login
+      else {
+          // Store token in localStorage
+          localStorage.setItem('adminToken', data.token);
+          
+          // Close the login modal
+          onClose();
+          
+          // Show success message
           alert('Admin logged in successfully!');
-          onClose(<AllTransactions/>);
-
+          
+          // Redirect to transactions dashboard
+          router.push('/transactions/alltransactions');
       }
     } 
     

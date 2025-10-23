@@ -28,7 +28,8 @@ app.use(express.json());
 
 app.use("/api/v1/admin", adminRouter);
 app.use("/api/v1/user", userRouter);
-app.use("/api/v1/transaction", transactionRouter);
+// Mount transaction router at /api/v1
+app.use("/api/v1", transactionRouter);
 
 async function dbConnect(){
     try {

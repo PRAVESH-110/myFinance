@@ -11,19 +11,13 @@ export function AdminIdentity() {
   const handleLoginClick = () => {
     openModal(
       <AdminLoginModal 
-        onClose={(component) => {
-          if (component) {
-            openModal(component);
-          } else {
-            closeModal();
-          }
-        }}
+        onClose={closeModal}
       />
     );
   };
 
   const handleSignupClick = () => {
-    openModal(<AdminSignupModal onClose={() => {}} />);
+    openModal(<AdminSignupModal onClose={closeModal} />);
   };
 
   return (

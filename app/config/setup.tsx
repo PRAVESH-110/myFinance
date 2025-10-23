@@ -13,11 +13,12 @@ export const API_ENDPOINTS = {
   admin: {
     signup: `${API_BASE_URL}/api/v1/admin/signup`,
     signin: `${API_BASE_URL}/api/v1/admin/signin`,
-    transactions: `${API_BASE_URL}/api/v1/admin/transaction/bulk`,
     createtransaction: `${API_BASE_URL}/api/v1/admin/createtransaction`,
   },
   transaction: {
     preview: `${API_BASE_URL}/api/v1/course/preview`,
-    purchase: `${API_BASE_URL}/api/v1/course/purchase`
+    purchase: `${API_BASE_URL}/api/v1/course/purchase`,
+    transactions: `${API_BASE_URL}/api/v1/transaction/bulk`,
+
   }
 };

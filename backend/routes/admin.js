@@ -163,18 +163,7 @@ const signupSchema = z.object({
 
     
     
-    adminRouter.get('/transaction/bulk',adminmiddleware, async function(req,res){
-        const adminId=req.userId;
-
-        const courses=await TransactionModel.find({
-            // _id: courseId, //check from the function updateone (ctrl+click)- filter the course
-            creatorID:adminId
-        });
-        res.json({
-            message:"courses found",
-            courses
-        })
-    })
+    
 
 
 module.exports={
