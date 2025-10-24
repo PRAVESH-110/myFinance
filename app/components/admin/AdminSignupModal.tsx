@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export function AdminSignupModal({ onClose }: { onClose: () => void }) {
   const [email, setEmail] = useState('');
@@ -9,6 +10,7 @@ export function AdminSignupModal({ onClose }: { onClose: () => void }) {
   const [lastName, setLastName] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,10 +44,13 @@ export function AdminSignupModal({ onClose }: { onClose: () => void }) {
         throw new Error(data.message || 'Failed to sign up');
       }
       
-      // On successful signup, close the modal and refresh the page
-      alert('Admin created successfully!');
+      // Show success message and redirect to admin login
+      alert('Admin account created successfully! You are being redirected to All transactions page.');
       onClose();
-      window.location.reload();
+      // Redirect to admin login page after a short delay
+      setTimeout(() => {
+        router.push('/transactions/alltransactions');
+      }, 1000);
       
     } catch (error: any) {
       console.error('Signup failed:', error);

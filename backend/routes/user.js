@@ -134,22 +134,27 @@ const signupSchema = z.object({
         })
 
 
-    userRouter.get('/usertransaction',usermiddleware, async function(req,res){
-        const userId=req.userId;
+    userRouter.get('/usertransaction', usermiddleware, async function(req, res) {
+        try {
+            const userId = req.userId;
 
-        const purchases= await userTransactionModel.find({
-            userId:userId,
-        })
+            // Find all transactions for the user
+            const transactions = await userTransactionModel.find({
+                creatorID: userId, // Changed from userId to creatorID to match the schema
+            }).sort({ createdAt: -1 }); // Sort by most recent first
 
-        let purchasedCourseIds=[];
-
-        for(let i=0;i<purchases.length;i++){
-            purchasedCourseIds.push(purchases[i].purchaseId);
+            res.json({
+                success: true,
+                transactions: transactions || []
+            });
+        } catch (error) {
+            console.error('Error fetching user transactions:', error);
+            res.status(500).json({
+                success: false,
+                message: 'Failed to fetch transactions',
+                error: error.message
+            });
         }
-        res.json({
-            purchases,
-            courseData
-        })
     })
 
 

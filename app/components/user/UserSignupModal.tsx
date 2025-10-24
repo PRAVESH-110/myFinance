@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export function UserSignupModal({ onClose }: { onClose: () => void }) {
   const [email, setEmail] = useState('');
@@ -10,6 +11,7 @@ export function UserSignupModal({ onClose }: { onClose: () => void }) {
   const [username, setUsername] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,14 +42,16 @@ export function UserSignupModal({ onClose }: { onClose: () => void }) {
 
       const data = await response.json();
 
-      if (!response.ok) {
+      if (response.ok) {
+        onClose();
+        alert('Account created successfully! You will be redirected to login.');
+        // Redirect to login page after a short delay
+        setTimeout(() => {
+          router.push('/authentication/login');
+        }, 1000);
+      } else {
         throw new Error(data.message || 'Failed to sign up');
       }
-      
-      // On successful signup, close the modal and refresh the page
-      alert('User created successfully!');
-      onClose();
-      window.location.reload();
       
     } catch (error: any) {
       console.error('Signup failed:', error);

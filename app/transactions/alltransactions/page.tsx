@@ -130,7 +130,7 @@ export default function AllTransactions() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">All Transactions</h1>
+      <h1 className="text-3xl text-center font-bold mb-8">All Transactions</h1>
       
       {transactions.length === 0 ? (
         <div className="text-center py-8">

@@ -1,11 +1,13 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export function UserLoginModal({ onClose }: { onClose: () => void }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -13,30 +15,68 @@ export function UserLoginModal({ onClose }: { onClose: () => void }) {
     
     try {
       
-      const response=await fetch('http://localhost:5000/api/v1/user/signin',{
-        method:'POST',
-        headers:{
-          'Content-Type':'application/json' 
+      const loginUrl = 'http://localhost:5000/api/v1/user/signin';
+      console.log('Sending login request to:', loginUrl);
+      
+      const response = await fetch(loginUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'  // Explicitly ask for JSON response
         },
-        body:JSON.stringify({
+        body: JSON.stringify({
           email,
           password
-        })
-      })
+        }),
+        credentials: 'include'  // Important for cookies/sessions
+      });
       
-      const data=await response.json();
       
-      if(!response.ok){
+      // First, get the response text to check if it's valid JSON
+      const responseText = await response.text();
+      let data;
+      
+      try {
+        data = JSON.parse(responseText);
+      } catch (e) {
+        console.error('Failed to parse response as JSON:', responseText.substring(0, 100) + '...');
+        throw new Error('Received invalid response from server. Please try again later.');
+      }
+      
+      if (!response.ok) {
         throw new Error(data.message || 'Failed to login');
       }
 
-      // Close modal on successful login
-      else{
-          onClose();
-          alert('User logged in successfully!');
-          window.location.reload();
-
+      // Successful login
+      console.log('Login successful, response data:', data);
+      
+      // Store the token from response if available
+      console.log('Login response data:', data);
+      
+      // Check for token in different possible response formats
+      const authToken = data.token || data.access_token || data.authToken;
+      
+      if (authToken) {
+        console.log('Storing auth token');
+        localStorage.setItem('token', authToken);
+        sessionStorage.setItem('token', authToken);
+      } else {
+        console.warn('No token found in login response. Available keys:', Object.keys(data));
+        // If we have a success message but no token, it might be using cookies/session
+        if (data.message && data.message.toLowerCase().includes('success')) {
+          console.log('Login successful, but no token returned (might be using cookies)');
+        } else {
+          throw new Error('Authentication failed: No token received');
+        }
       }
+
+      // Close the modal first
+      onClose();
+      console.log('Login successful, redirecting to /transactions/usertransactions');
+      
+      // Force a full page reload to ensure all auth state is properly initialized
+      // This helps with Next.js client-side routing issues
+      window.location.href = '/transactions/usertransactions';
     } 
     
     catch (error:any) {
@@ -44,6 +84,13 @@ export function UserLoginModal({ onClose }: { onClose: () => void }) {
       alert(error.message || 'Failed to login');
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  // Add a function to handle the redirect
+  const handleRedirect = (path: string) => {
+    if (typeof window !== 'undefined') {
+      window.location.href = path;
     }
   };
 
