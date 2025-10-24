@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { API_ENDPOINTS } from '../../config/setup';
 
 interface Transaction {
@@ -14,11 +15,13 @@ interface Transaction {
 }
 
 export default function AllTransactions() {
+  const router = useRouter();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    
     const fetchTransactions = async () => {
       try {
         console.log('=== FETCH TRANSACTIONS STARTED ===');
@@ -190,6 +193,15 @@ export default function AllTransactions() {
           </table>
         </div>
       )}
+
+      <div className="mt-6">
+        <button 
+          onClick={() => router.push('/transactions/create')}
+          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+        >
+          Create New Transaction
+        </button>
+      </div>
     </div>
   );
 }
